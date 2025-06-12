@@ -38,7 +38,7 @@ class Caramelo {
 	method precio() { return 12 }
 	method peso() { return peso }
 	method mordisco() { peso = peso - 1 }
-	method sabor() { return frutilla }
+	var property sabor
 	method libreGluten() { return true }
 }
 
@@ -119,4 +119,45 @@ class Tuttifrutti {
 	method peso() { return 5 }
 	method libreGluten() { return libreDeGluten }	
 	method libreGluten(valor) { libreDeGluten = valor }
+}
+
+class BombonDuro inherits Bombon {
+	override method mordisco() {peso = (peso - 1).max(0)}
+
+	method dureza() = if(peso > 12) 3 else if(peso.between(8, 12)) 2 else 1
+}
+
+class CarameloChocolate inherits Caramelo {
+	override method mordisco() {
+		super()
+		sabor = chocolate
+	}
+
+	override method precio() = super() + 1
+}
+
+class ObleaCrujientes inherits Oblea {
+	var cantMordiscos = 0
+
+	override method mordisco() {
+		super()
+		if(cantMordiscos <= 3){
+			peso = (peso - 3).max(0)
+		}
+		cantMordiscos += 1
+	}
+
+	method estaDebil() = cantMordiscos > 3
+}
+
+class ChocolatinVip inherits Chocolatin {
+	method humedad() = 0.randomUpTo(1)
+
+	override method peso(){
+		return super() * (1 + self.humedad()) // En un Override se debe volver a escribir el return
+	}
+}
+
+class ChocolatinPremium inherits ChocolatinVip {
+	override method humedad() = super() / 2
 }
